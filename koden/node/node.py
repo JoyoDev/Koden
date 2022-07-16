@@ -1,4 +1,7 @@
 class Node:
+    """
+    Represents physical machine where worker runs
+    """
     def __init__(self, name: str, ip: str, cores: int, memory: int, disk: int):
         self.name = name
         self.cores = cores
