@@ -58,10 +58,3 @@ class DockerClient:
         logger.debug(f"Container logs: {str(out)}")
 
         return DockerResult(container_id=container["Id"], action="start", result="success")
-
-
-if __name__ == "__main__":
-    config = Config(image="nginx", name="Nginx", restart_policy="always")
-    d = DockerClient(task_config=config)
-    res = d.run()
-    print(res.container_id)

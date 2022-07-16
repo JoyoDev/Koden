@@ -18,6 +18,9 @@ class Singleton(type):
 
 
 class KLogger(metaclass=Singleton):
+    """
+    Singleton Logger class for Koden
+    """
     def __init__(self):
         # create logger
         logger = logging.getLogger('koden')
