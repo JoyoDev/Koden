@@ -60,7 +60,7 @@ class Port:
         return start, end, None
 
     @staticmethod
-    def check_port_range(port: int):
+    def check_port_range(port: int) -> bool:
         return 1 <= int(port) < 65535
 
 

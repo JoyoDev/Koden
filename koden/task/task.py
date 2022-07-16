@@ -2,6 +2,7 @@ from typing import Dict
 from datetime import datetime
 from uuid import uuid4
 from koden.task.state import State
+from koden.nat.port import PortSet
 
 
 class Task:
@@ -17,7 +18,7 @@ class Task:
         self.image = image
         self.memory = memory
         self.disk = disk
-        self.exposed_ports: Dict[str, Dict] = dict()
+        self.exposed_ports: PortSet = PortSet()
         self.port_bindings: Dict[str, str] = dict()
         self.restart_policy = restart_policy
         self.start_time = datetime.now()
