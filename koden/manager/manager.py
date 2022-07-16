@@ -6,7 +6,7 @@ from koden.worker.worker import Worker
 import queue
 
 
-class ControlPlane:
+class Manager:
     """
     Control Plane implementation
     Manages cluster state - accepts requests, schedules tasks and keeps track of the entire workload.
