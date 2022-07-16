@@ -1,5 +1,5 @@
-import unittest
 from koden.connection.nat import Port
+import unittest
 
 
 class TestNat(unittest.TestCase):
