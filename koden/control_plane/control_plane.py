@@ -13,10 +13,10 @@ class ControlPlane:
     """
 
     def __init__(self):
-        self.pending = queue.Queue()
+        self.pending: queue.Queue = queue.Queue()
         self.task_db: Dict[str, Task] = dict()
         self.task_event_db: Dict[str, TaskEvent] = dict()
-        workers = List[Worker]
+        workers: List[Worker] = []
         worker_task_map: Dict[str, List[UUID]] = dict()
         task_worker_map: Dict[UUID, str] = dict()
 
