@@ -1,8 +1,9 @@
 from koden.task.config import Config
-from koden.logger.logger import KLogger
 import docker
+import logging
 
-logger = KLogger()
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)s %(levelname)s:%(message)s')
+logger = logging.getLogger(__name__)
 
 
 class DockerResult:
@@ -31,7 +32,7 @@ class DockerClient:
         try:
             self.client.images.pull(self.config.image, all_tags=False)
         except Exception as e:
-            KLogger.error(f"Error pulling image: {self.config.image}")
+            logger.error(f"Error pulling image: {self.config.image}")
             return DockerResult(error=str(e))
 
         host_config = self.client.api.create_host_config(
