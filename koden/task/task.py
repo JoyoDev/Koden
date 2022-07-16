@@ -2,7 +2,7 @@ from typing import Dict
 from datetime import datetime
 from uuid import uuid4
 from koden.task.state import State
-from koden.nat.port import PortSet
+from koden.connection.nat import PortSet
 
 
 class Task:
