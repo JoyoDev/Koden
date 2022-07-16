@@ -21,6 +21,7 @@ class Port:
 
     @staticmethod
     def parse_port_range_to_int(raw_port: str) -> (int, int, str):
+        """Parse raw port(s) and return int from it"""
         if len(raw_port) == 0:
             return 0, 0, None
 
@@ -32,6 +33,8 @@ class Port:
 
     @staticmethod
     def parse_port_range(ports: str) -> (int, int, str):
+        """Parse passed port range and return starting and ending port"""
+
         if not ports:
             return 0, 0, "Empty string specified for ports."
 
@@ -61,6 +64,7 @@ class Port:
 
     @staticmethod
     def check_port_range(port: int) -> bool:
+        """Check if port number is valid"""
         return 1 <= int(port) < 65535
 
 
