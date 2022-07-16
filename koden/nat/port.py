@@ -39,9 +39,12 @@ class Port:
             return 0, 0, "Empty string specified for ports."
 
         if "-" not in ports:
-            start = int(ports)
-            end = start
-            return start, end, None
+            try:
+                start = int(ports)
+                end = start
+                return start, end, None
+            except Exception as e:
+                return 0, 0, str(e)
 
         parts = ports.split("-")
 

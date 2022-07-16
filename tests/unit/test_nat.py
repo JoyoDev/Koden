@@ -57,3 +57,31 @@ class TestNat(unittest.TestCase):
         assert start == 0
         assert end == 0
         assert error is None
+
+    def test_port_creation_when_valid_config(self):
+        protocol = "tcp"
+        port_str = "5001"
+
+        port = Port(protocol, port_str)
+
+        assert port.port == "5001/tcp"
+        assert port.error is None
+
+    def test_port_creation_when_valid_config_2(self):
+        protocol = "tcp"
+        port_str = "5001-8081"
+
+        port = Port(protocol, port_str)
+
+        assert port.port == "5001-8081/tcp"
+        assert port.error is None
+
+    def test_port_creation_when_invalid_config(self):
+        protocol = "tcp"
+        port_str = "no_port"
+
+        port = Port(protocol, port_str)
+
+        assert port.port == ""
+        assert port.error != ""
+
