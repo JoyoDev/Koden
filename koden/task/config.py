@@ -1,4 +1,4 @@
-from typing import List
+from koden.task.task import Task
 
 
 class Config:
@@ -6,16 +6,16 @@ class Config:
     Configuration for Tasks's containers
     """
 
-    def __init__(self, name: str, image: str, restart_policy: str, attach_stdin: bool = True,
-                 attach_stdout: bool = True, attach_stderr: bool = True, cmd: List[str] = [], memory: int = 0,
-                 disk: int = 0, env: List[str] = []):
-        self.name = name
-        self.image = image
-        self.restart_policy = restart_policy
+    def __init__(self, task: Task, attach_stdin=True, attach_stdout=True, attach_stderr=True, cmd=[], env=[]):
+        self.name = task.name
+        self.image = task.image
         self.attach_stdin = attach_stdin
         self.attach_stdout = attach_stdout
         self.attach_stderr = attach_stderr
+        self.exposed_ports = task.exposed_ports
         self.cmd = cmd
-        self.memory = memory
-        self.disk = disk
+        self.cpu = task.cpu
+        self.memory = task.memory
+        self.disk = task.disk
         self.env = env
+        self.restart_policy = task.restart_policy

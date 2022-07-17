@@ -26,8 +26,8 @@ class DockerClient:
     def __init__(self, task_config: Config):
         self.client = docker.from_env()
         self.config = task_config
-        self.container_id = None
 
+    # run container with specified image
     def run(self) -> DockerResult:
         try:
             self.client.images.pull(self.config.image, all_tags=False)
@@ -44,7 +44,7 @@ class DockerClient:
         try:
             container = self.client.api.create_container(name=self.config.name, image=self.config.image,
                                                          environment=self.config.env, command=self.config.cmd,
-                                                         host_config=host_config, detach=True)
+                                                         host_config=host_config)
         except Exception as e:
             logger.error(f"Error creating container using image {self.config.image}")
             return DockerResult(error=str(e))
@@ -59,3 +59,22 @@ class DockerClient:
         logger.debug(f"Container logs: {str(out)}")
 
         return DockerResult(container_id=container["Id"], action="start", result="success")
+
+    # remove container with given id
+    def stop(self, container_id: str):
+        logger.info(f"Attempting to stop container {container_id}")
+        try:
+            self.client.api.stop(container_id)
+            logger.debug(f"Container {container_id} stopped")
+        except Exception as e:
+            logger.critical(f"Failed to stop container {container_id}")
+            return DockerResult(error=str(e))
+
+        logger.info(f"Attempting to remove container {container_id}")
+        try:
+            self.client.api.remove_container(container_id, v=True, link=False, force=False)
+            logger.info(f"Container {container_id} removed")
+            return DockerResult(container_id=container_id, action="stop", result="success")
+        except Exception as e:
+            logger.critical(f"Failed to remove container {container_id}")
+            return DockerResult(error=str(e))
