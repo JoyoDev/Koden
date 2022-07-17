@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 # string in below ...
 
 description = "Simple Docker container orchestration tool"
-long_description = open("README.rst").read()
+long_description = open("README.md").read()
 url = "https://github.com/JoyoDev/koden"
 
 
