@@ -40,6 +40,7 @@ class Worker:
         if result.error is not None:
             logger.error(f"Error starting task {task.id} with error {result.error}")
             task.state = State.FAILED
+            self.db[task.id] = task
             return result
 
         task.container_id = result.container_id
@@ -55,6 +56,8 @@ class Worker:
         result = d.stop(task.container_id)
         if result.error is not None:
             logger.error(f"Error stopping container {task.container_id} with error {result.error}")
+            task.state = State.FAILED
+            self.db[task.id] = task
             return result
 
         task.finish_time = datetime.now()
