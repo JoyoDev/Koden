@@ -35,7 +35,11 @@ class Worker:
             logger.error("No tasks in the queue")
             return DockerResult()
 
-        task_persisted = self.db[task.id]
+        if task.id in self.db.keys():
+            task_persisted = self.db[task.id]
+        else:
+            task_persisted = None
+
         if task_persisted is None:
             task_persisted = task
             self.db[task.id] = task
