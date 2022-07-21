@@ -1,5 +1,5 @@
 from typing import Dict
-from koden.task.state import State
+from koden.task.state import State, state_transition_map
 from koden.task.task import Task
 from koden.task.config import Config
 from koden.task.docker_client import DockerResult, DockerClient
@@ -29,8 +29,29 @@ class Worker:
     def add_task(self, task: Task):
         self.queue.put(task)
 
-    def run_task(self):
-        pass
+    def run_task(self) -> DockerResult:
+        task = self.queue.get()
+        if task is None:
+            logger.error("No tasks in the queue")
+            return DockerResult()
+
+        task_persisted = self.db[task.id]
+        if task_persisted is None:
+            task_persisted = task
+            self.db[task.id] = task
+
+        result = DockerResult()
+        if task.state in state_transition_map[task_persisted.state]:  # validate transition
+            if task.state == State.SCHEDULED:
+                result = self.start_task(task)
+            elif task.state == State.COMPLETED:
+                result = self.stop_task(task)
+            else:
+                result.error = f"Undefined state for task {task.id}"
+        else:
+            result.error = f"Invalid transition from {task_persisted.state} to {task.state}"
+
+        return result
 
     def start_task(self, task: Task) -> DockerResult:
         config = Config(task=task)
